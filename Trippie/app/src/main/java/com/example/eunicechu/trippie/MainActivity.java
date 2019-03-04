@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     public void activityMap (View v)
     {
         Intent i = new Intent(this, MapsActivity.class);
+        i.putExtra("buttonID", v.getId());
         startActivity(i);
     }
 

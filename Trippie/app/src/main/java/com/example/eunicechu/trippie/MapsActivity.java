@@ -1,6 +1,7 @@
 package com.example.eunicechu.trippie;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -45,6 +46,27 @@ public class MapsActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        Intent mI = getIntent();
+        int intValue = mI.getIntExtra("buttonID", 0);
+        if(intValue == 0){
+            // error handling
+        } else{
+            if(intValue == R.id.button){
+
+            }
+            if(intValue == R.id.button2){
+
+            }
+            if(intValue == R.id.button3){
+
+            }
+            if(intValue == R.id.button4){
+
+            }
+            if(intValue == R.id.button5){
+
+            }
+        }
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             checkUserLocationPermission();
         }
