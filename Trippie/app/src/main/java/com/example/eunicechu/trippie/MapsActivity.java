@@ -1,8 +1,10 @@
 package com.example.eunicechu.trippie;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,12 +19,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback,
@@ -34,10 +36,12 @@ public class MapsActivity extends FragmentActivity implements
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
     private Location lastLocation;
-    private Marker currentUserLocationMarker;
+//    private Marker currentUserLocationMarker;
     private static final int Request_User_Location_Code = 99;
-//    LocationManager locationManager;
-//    private static final int REQUEST_LOCATION_PERMISSION = 1;
+    private LocationManager locationManager;
+    private static final long MIN_TIME = 400;
+    private static final float MIN_DISTANCE = 1000;
+////    private static final int REQUEST_LOCATION_PERMISSION = 1;
 //    Marker marker;
 //    LocationListener locationListener;
 
@@ -53,7 +57,7 @@ public class MapsActivity extends FragmentActivity implements
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
     }
 
 
@@ -131,24 +135,9 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onLocationChanged(Location location) {
-        lastLocation = location;
-        if(currentUserLocationMarker != null)
-        {
-            currentUserLocationMarker.remove();
-        }
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-
-//        MarkerOptions markerOptions = new MarkerOptions();
-//        markerOptions.position(latLng);
-//        markerOptions.title("user Current Location");
-//        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-//        currentUserLocationMarker = mMap.addMarker(markerOptions);
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
-
-        if(googleApiClient != null){
-            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
-        }
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 20);
+        mMap.animateCamera(cameraUpdate);
     }
 
     @Override
