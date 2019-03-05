@@ -1,7 +1,6 @@
 package com.example.eunicechu.trippie;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -13,6 +12,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -42,6 +43,10 @@ public class MapsActivity extends FragmentActivity implements
     private LocationManager locationManager;
     private static final long MIN_TIME = 400;
     private static final float MIN_DISTANCE = 1000;
+    private double latitude, longitude;
+    private int proximityRadius = 10000;
+
+
 ////    private static final int REQUEST_LOCATION_PERMISSION = 1;
 //    Marker marker;
 //    LocationListener locationListener;
@@ -50,27 +55,66 @@ public class MapsActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        Intent mI = getIntent();
-        int intValue = mI.getIntExtra("buttonID", 0);
-        if(intValue == 0){
-            // error handling
-        } else{
-            if(intValue == R.id.button){
-
-            }
-            if(intValue == R.id.button2){
-
-            }
-            if(intValue == R.id.button3){
-
-            }
-            if(intValue == R.id.button4){
-
-            }
-            if(intValue == R.id.button5){
-
-            }
-        }
+//        Intent mI = getIntent();
+//        int intValue = mI.getIntExtra("buttonID", 0);
+//        if(intValue == 0){
+//            // error handling
+//        } else{
+//            if(intValue == R.id.button){
+////                mMap.clear();
+//                String url = getUrl(latitude, longitude, attraction);
+//                transferData[0] = mMap;
+//                transferData[1] = url;
+//
+//                getNearbyPlaces.execute(transferData);
+//                Toast.makeText(this, "Searching for nearby attraction...", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Showing nearby attraction...", Toast.LENGTH_SHORT).show();
+//            }
+//            if(intValue == R.id.button2){
+////                mMap.clear();
+//                String url = getUrl(latitude, longitude, food);
+//                transferData[0] = mMap;
+//                transferData[1] = url;
+//
+//                getNearbyPlaces.execute(transferData);
+//                Toast.makeText(this, "Searching for nearby food...", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Showing nearby food...", Toast.LENGTH_SHORT).show();
+//
+//            }
+//            if(intValue == R.id.button3){
+////                mMap.clear();
+//                String url = getUrl(latitude, longitude, mall);
+//                transferData[0] = mMap;
+//                transferData[1] = url;
+//
+//                getNearbyPlaces.execute(transferData);
+//                Toast.makeText(this, "Searching for nearby mall...", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Showing nearby mall...", Toast.LENGTH_SHORT).show();
+//
+//            }
+//            if(intValue == R.id.button4){
+////                mMap.clear();
+//                String url = getUrl(latitude, longitude, park);
+//                transferData[0] = mMap;
+//                transferData[1] = url;
+//
+//                getNearbyPlaces.execute(transferData);
+//                Toast.makeText(this, "Searching for nearby park...", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Showing nearby park...", Toast.LENGTH_SHORT).show();
+//
+//            }
+//            if(intValue == R.id.button5){
+////                mMap.clear();
+//                String url = getUrl(latitude, longitude, train);
+//                transferData[0] = mMap;
+//                transferData[1] = url;
+//
+//                getNearbyPlaces.execute(transferData);
+//                Toast.makeText(this, "Searching for nearby train...", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Showing nearby train...", Toast.LENGTH_SHORT).show();
+//
+//            }
+//        }
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             checkUserLocationPermission();
         }
@@ -82,6 +126,57 @@ public class MapsActivity extends FragmentActivity implements
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
     }
 
+    public void onClick(View v){
+        String attraction = "attraction", restaurant = "restaurant", mall = "shopping_mall", park = "park", train = "train_station";
+        Object transferData[]           = new Object[2];
+        GetNearbyPlaces getNearbyPlaces = new GetNearbyPlaces();
+
+        switch(v.getId()){
+            case R.id.food_nearby: //for food
+                mMap.clear();
+                String url      = getUrl(latitude, longitude, restaurant);
+                transferData[0] = mMap;
+                transferData[1] = url;
+
+                getNearbyPlaces.execute(transferData);
+                Toast.makeText(this, "Searching for nearby food...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Showing nearby food...", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.train_nearby: //for train
+                mMap.clear();
+                url             = getUrl(latitude, longitude, train);
+                transferData[0] = mMap;
+                transferData[1] = url;
+
+                getNearbyPlaces.execute(transferData);
+                Toast.makeText(this, "Searching for nearby train...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Showing nearby train...", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.mall_nearby: //for mall
+                mMap.clear();
+                url             = getUrl(latitude, longitude, mall);
+                transferData[0] = mMap;
+                transferData[1] = url;
+
+                getNearbyPlaces.execute(transferData);
+                Toast.makeText(this, "Searching for nearby mall...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Showing nearby mall...", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.park_nearby: //for mall
+                mMap.clear();
+                url             = getUrl(latitude, longitude, park);
+                transferData[0] = mMap;
+                transferData[1] = url;
+
+                getNearbyPlaces.execute(transferData);
+                Toast.makeText(this, "Searching for nearby park...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Showing nearby park...", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
 
     /**
      * Manipulates the map once available.
@@ -92,6 +187,19 @@ public class MapsActivity extends FragmentActivity implements
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+
+    private String getUrl(double latitude, double longitude, String str_nearbylocation){
+        StringBuilder googleURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+        googleURL.append("location=" + latitude + "," + longitude);
+        googleURL.append("&radius=" + proximityRadius);
+        googleURL.append("&type=" + str_nearbylocation);
+        googleURL.append("&sensor=true");
+        googleURL.append("&key=" + "AIzaSyCU_yfjpw71q88cIsNKyeNyEV8IALjxDqo");
+
+        Log.d("GoogleMapsActivity", "url = " + googleURL.toString());
+        return googleURL.toString();
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -157,6 +265,8 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onLocationChanged(Location location) {
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 20);
         mMap.animateCamera(cameraUpdate);
@@ -173,7 +283,6 @@ public class MapsActivity extends FragmentActivity implements
         {
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
         }
-
     }
 
     @Override
