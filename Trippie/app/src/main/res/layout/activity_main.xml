@@ -10,7 +10,7 @@
         android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="110dp"
         android:src="@drawable/logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +25,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
+        <ImageButton
             android:id="@+id/foodBtn"
             android:layout_width="190dp"
             android:layout_height="190dp"
@@ -33,111 +33,122 @@
             android:layout_marginLeft="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
             android:background="@android:color/holo_green_light"
-            android:paddingTop="120dp"
-            android:text="Food"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/parkBtn"
+            android:paddingLeft="45dp"
+            android:paddingTop="32dp"
+            android:paddingRight="45dp"
+            android:paddingBottom="45dp"
+            android:scaleType="fitCenter"
             app:layout_constraintEnd_toStartOf="@+id/mallBtn"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/food"
             android:onClick="activityMap" />
 
-        <Button
+        <ImageButton
             android:id="@+id/mallBtn"
             android:layout_width="190dp"
             android:layout_height="190dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginBottom="16dp"
             android:background="@android:color/holo_blue_light"
-            android:paddingTop="120dp"
-            android:text="Malls"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/trainBtn"
+            android:paddingLeft="45dp"
+            android:paddingTop="32dp"
+            android:paddingRight="45dp"
+            android:paddingBottom="45dp"
+            android:scaleType="fitCenter"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/malls"
             android:onClick="activityMap" />
 
-        <Button
+        <ImageButton
             android:id="@+id/parkBtn"
             android:layout_width="190dp"
             android:layout_height="190dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"
             android:background="@android:color/holo_orange_light"
-            android:paddingTop="120dp"
-            android:text="Parks"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/trainBtn"
+            android:paddingLeft="45dp"
+            android:paddingTop="32dp"
+            android:paddingRight="45dp"
+            android:paddingBottom="45dp"
+            android:scaleType="fitCenter"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/foodBtn"
+            app:srcCompat="@drawable/parks"
             android:onClick="activityMap" />
 
-        <Button
+        <ImageButton
             android:id="@+id/trainBtn"
             android:layout_width="190dp"
             android:layout_height="190dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
             android:background="@android:color/holo_red_light"
-            android:paddingTop="120dp"
-            android:text="Train Stations"
+            android:paddingLeft="45dp"
+            android:paddingTop="32dp"
+            android:paddingRight="45dp"
+            android:paddingBottom="45dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintStart_toEndOf="@+id/parkBtn"
+            app:layout_constraintTop_toBottomOf="@+id/mallBtn"
+            app:srcCompat="@drawable/train"
+            android:onClick="activityMap" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:text="FOOD"
             android:textColor="@android:color/white"
+            android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:onClick="activityMap"/>
-
-        <ImageView
-            android:id="@+id/mallImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="32dp"
-            android:elevation="2dp"
-            app:layout_constraintEnd_toEndOf="@+id/mallBtn"
-            app:layout_constraintStart_toStartOf="@+id/mallBtn"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/malls" />
-
-        <ImageView
-            android:id="@+id/parkImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="32dp"
-            android:elevation="2dp"
-            app:layout_constraintEnd_toEndOf="@+id/parkBtn"
-            app:layout_constraintStart_toStartOf="@+id/parkBtn"
-            app:layout_constraintTop_toTopOf="@+id/parkBtn"
-            app:srcCompat="@drawable/parks" />
-
-        <ImageView
-            android:id="@+id/foodImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="32dp"
-            android:elevation="2dp"
+            app:layout_constraintBottom_toBottomOf="@+id/foodBtn"
             app:layout_constraintEnd_toEndOf="@+id/foodBtn"
-            app:layout_constraintStart_toStartOf="@+id/foodBtn"
-            app:layout_constraintTop_toTopOf="@+id/foodBtn"
-            app:srcCompat="@drawable/food" />
+            app:layout_constraintStart_toStartOf="@+id/foodBtn" />
 
-        <ImageView
-            android:id="@+id/trainImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="32dp"
-            android:elevation="2dp"
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:text="MALLS"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/mallBtn"
+            app:layout_constraintEnd_toEndOf="@+id/mallBtn"
+            app:layout_constraintStart_toStartOf="@+id/mallBtn" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:text="PARKS"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/parkBtn"
+            app:layout_constraintEnd_toEndOf="@+id/parkBtn"
+            app:layout_constraintStart_toStartOf="@+id/parkBtn" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:text="TRAIN STATIONS"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/trainBtn"
             app:layout_constraintEnd_toEndOf="@+id/trainBtn"
-            app:layout_constraintStart_toStartOf="@+id/trainBtn"
-            app:layout_constraintTop_toTopOf="@+id/trainBtn"
-            app:srcCompat="@drawable/train" />
+            app:layout_constraintStart_toStartOf="@+id/trainBtn" />
 
     </android.support.constraint.ConstraintLayout>
 
