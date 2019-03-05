@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -46,6 +47,10 @@ public class MapsActivity extends FragmentActivity implements
     private static final float MIN_DISTANCE = 1000;
     private double latitude, longitude;
     private int proximityRadius = 10000;
+    private ImageButton foodBtn;
+    private ImageButton mallBtn;
+    private ImageButton parkBtn;
+    private ImageButton trainBtn;
 
 
 ////    private static final int REQUEST_LOCATION_PERMISSION = 1;
@@ -125,6 +130,11 @@ public class MapsActivity extends FragmentActivity implements
         mapFragment.getMapAsync(this);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        foodBtn = findViewById(R.id.food_nearby);
+        mallBtn = findViewById(R.id.mall_nearby);
+        parkBtn = findViewById(R.id.park_nearby);
+        trainBtn = findViewById(R.id.train_nearby);
     }
 
     public void onClick(View v){
@@ -140,8 +150,13 @@ public class MapsActivity extends FragmentActivity implements
                 transferData[1] = url;
 
                 getNearbyPlaces.execute(transferData);
-                Toast.makeText(this, "Searching for nearby food...", Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, "Showing nearby food...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Showing nearby food.", Toast.LENGTH_SHORT).show();
+
+                foodBtn.setImageResource(R.drawable.foodmap_s);
+                mallBtn.setImageResource(R.drawable.mallsmap);
+                parkBtn.setImageResource(R.drawable.parksmap);
+                trainBtn.setImageResource(R.drawable.trainmap);
+
                 break;
 
             case R.id.train_nearby: //for train
@@ -149,10 +164,15 @@ public class MapsActivity extends FragmentActivity implements
                 url             = getUrl(latitude, longitude, train);
                 transferData[0] = mMap;
                 transferData[1] = url;
-
+                getNearbyPlaces.setId("train");
                 getNearbyPlaces.execute(transferData);
-                Toast.makeText(this, "Searching for nearby train...", Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, "Showing nearby train...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Showing nearby train stations.", Toast.LENGTH_SHORT).show();
+
+                foodBtn.setImageResource(R.drawable.foodmap);
+                mallBtn.setImageResource(R.drawable.mallsmap);
+                parkBtn.setImageResource(R.drawable.parksmap);
+                trainBtn.setImageResource(R.drawable.trainmap_s);
+
                 break;
 
             case R.id.mall_nearby: //for mall
@@ -160,21 +180,31 @@ public class MapsActivity extends FragmentActivity implements
                 url             = getUrl(latitude, longitude, mall);
                 transferData[0] = mMap;
                 transferData[1] = url;
-
+                getNearbyPlaces.setId("mall");
                 getNearbyPlaces.execute(transferData);
-                Toast.makeText(this, "Searching for nearby mall...", Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, "Showing nearby mall...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Showing nearby malls.", Toast.LENGTH_SHORT).show();
+
+                foodBtn.setImageResource(R.drawable.foodmap);
+                mallBtn.setImageResource(R.drawable.mallsmap_s);
+                parkBtn.setImageResource(R.drawable.parksmap);
+                trainBtn.setImageResource(R.drawable.trainmap);
+
                 break;
 
-            case R.id.park_nearby: //for mall
+            case R.id.park_nearby: //for park
                 mMap.clear();
                 url             = getUrl(latitude, longitude, park);
                 transferData[0] = mMap;
                 transferData[1] = url;
-
+                getNearbyPlaces.setId("park");
                 getNearbyPlaces.execute(transferData);
-                Toast.makeText(this, "Searching for nearby park...", Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, "Showing nearby park...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Showing nearby parks.", Toast.LENGTH_SHORT).show();
+
+                foodBtn.setImageResource(R.drawable.foodmap);
+                mallBtn.setImageResource(R.drawable.mallsmap);
+                parkBtn.setImageResource(R.drawable.parksmap_s);
+                trainBtn.setImageResource(R.drawable.trainmap);
+
                 break;
         }
     }
@@ -204,7 +234,6 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         String attraction = "attraction", restaurant = "restaurant", mall = "shopping_mall", park = "park", train = "train_station";
         Object transferData[]           = new Object[2];
         GetNearbyPlaces getNearbyPlaces = new GetNearbyPlaces();
@@ -216,14 +245,59 @@ public class MapsActivity extends FragmentActivity implements
         } else{
             if(intValue == R.id.foodBtn){
                 mMap.clear();
-
                 String url      = getUrl(1.4360, 103.7860, restaurant);
                 transferData[0] = mMap;
                 transferData[1] = url;
-
+                getNearbyPlaces.setId("food");
                 getNearbyPlaces.execute(transferData);
-//                Toast.makeText(this, "Searching for nearby food...", Toast.LENGTH_SHORT).show();
-//                Toast.makeText(this, "Showing nearby food...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Showing nearby food.", Toast.LENGTH_SHORT).show();
+
+                foodBtn.setImageResource(R.drawable.foodmap_s);
+                mallBtn.setImageResource(R.drawable.mallsmap);
+                parkBtn.setImageResource(R.drawable.parksmap);
+                trainBtn.setImageResource(R.drawable.trainmap);
+            }
+            else if(intValue == R.id.mallBtn){
+                mMap.clear();
+                String url      = getUrl(1.4360, 103.7860, mall);
+                transferData[0] = mMap;
+                transferData[1] = url;
+                getNearbyPlaces.setId("mall");
+                getNearbyPlaces.execute(transferData);
+                Toast.makeText(this, "Showing nearby malls.", Toast.LENGTH_SHORT).show();
+
+                foodBtn.setImageResource(R.drawable.foodmap);
+                mallBtn.setImageResource(R.drawable.mallsmap_s);
+                parkBtn.setImageResource(R.drawable.parksmap);
+                trainBtn.setImageResource(R.drawable.trainmap);
+            }
+            else if(intValue == R.id.parkBtn){
+                mMap.clear();
+                String url      = getUrl(1.4360, 103.7860, park);
+                transferData[0] = mMap;
+                transferData[1] = url;
+                getNearbyPlaces.setId("park");
+                getNearbyPlaces.execute(transferData);
+                Toast.makeText(this, "Showing nearby parks.", Toast.LENGTH_SHORT).show();
+
+                foodBtn.setImageResource(R.drawable.foodmap);
+                mallBtn.setImageResource(R.drawable.mallsmap);
+                parkBtn.setImageResource(R.drawable.parksmap_s);
+                trainBtn.setImageResource(R.drawable.trainmap);
+            }
+            else {
+                mMap.clear();
+                String url      = getUrl(1.4360, 103.7860, train);
+                transferData[0] = mMap;
+                transferData[1] = url;
+                getNearbyPlaces.setId("train");
+                getNearbyPlaces.execute(transferData);
+                Toast.makeText(this, "Showing nearby train stations.", Toast.LENGTH_SHORT).show();
+
+                foodBtn.setImageResource(R.drawable.foodmap);
+                mallBtn.setImageResource(R.drawable.mallsmap);
+                parkBtn.setImageResource(R.drawable.parksmap);
+                trainBtn.setImageResource(R.drawable.trainmap_s);
             }
         }
 
@@ -291,7 +365,7 @@ public class MapsActivity extends FragmentActivity implements
         latitude = location.getLatitude();
         longitude = location.getLongitude();
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 20);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
         mMap.animateCamera(cameraUpdate);
     }
 
