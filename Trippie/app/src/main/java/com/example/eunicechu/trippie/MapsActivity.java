@@ -2,6 +2,7 @@ package com.example.eunicechu.trippie;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -203,6 +204,28 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        String attraction = "attraction", restaurant = "restaurant", mall = "shopping_mall", park = "park", train = "train_station";
+        Object transferData[]           = new Object[2];
+        GetNearbyPlaces getNearbyPlaces = new GetNearbyPlaces();
+
+        Intent mI = getIntent();
+        int intValue = mI.getIntExtra("buttonID", 0);
+        if(intValue == 0){
+            // error handling
+        } else{
+            if(intValue == R.id.foodBtn){
+                mMap.clear();
+
+                String url      = getUrl(1.4360, 103.7860, restaurant);
+                transferData[0] = mMap;
+                transferData[1] = url;
+
+                getNearbyPlaces.execute(transferData);
+//                Toast.makeText(this, "Searching for nearby food...", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Showing nearby food...", Toast.LENGTH_SHORT).show();
+            }
+        }
 
         // Add a marker in Sydney and move the camera
 //        LatLng sydney = new LatLng(-34, 151);
