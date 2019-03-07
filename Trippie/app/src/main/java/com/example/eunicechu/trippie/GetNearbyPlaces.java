@@ -33,6 +33,7 @@ public class GetNearbyPlaces extends AsyncTask<Object, String, String> {
 
     @Override
     protected void onPostExecute(String s) {
+        mMap.clear();
         List<HashMap<String, String>> nearbyPlaceList = null;
         DataParse dataParse = new DataParse();
         nearbyPlaceList = dataParse.parse(s);
@@ -60,7 +61,7 @@ public class GetNearbyPlaces extends AsyncTask<Object, String, String> {
             else if (id.equals("park"))
                 markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
             else
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
             mMap.addMarker(markerOptions);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(10));

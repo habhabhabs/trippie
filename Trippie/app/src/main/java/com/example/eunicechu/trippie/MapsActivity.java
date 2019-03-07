@@ -141,14 +141,14 @@ public class MapsActivity extends FragmentActivity implements
         String attraction = "attraction", restaurant = "restaurant", mall = "shopping_mall", park = "park", train = "train_station";
         Object transferData[]           = new Object[2];
         GetNearbyPlaces getNearbyPlaces = new GetNearbyPlaces();
-
+        //mMap.clear();
         switch(v.getId()){
             case R.id.food_nearby: //for food
-                mMap.clear();
+                //mMap.clear();
                 String url      = getUrl(latitude, longitude, restaurant);
                 transferData[0] = mMap;
                 transferData[1] = url;
-
+                getNearbyPlaces.setId("food");
                 getNearbyPlaces.execute(transferData);
                 Toast.makeText(this, "Showing nearby food.", Toast.LENGTH_SHORT).show();
 
@@ -160,7 +160,7 @@ public class MapsActivity extends FragmentActivity implements
                 break;
 
             case R.id.train_nearby: //for train
-                mMap.clear();
+                //mMap.clear();
                 url             = getUrl(latitude, longitude, train);
                 transferData[0] = mMap;
                 transferData[1] = url;
@@ -176,7 +176,7 @@ public class MapsActivity extends FragmentActivity implements
                 break;
 
             case R.id.mall_nearby: //for mall
-                mMap.clear();
+                //mMap.clear();
                 url             = getUrl(latitude, longitude, mall);
                 transferData[0] = mMap;
                 transferData[1] = url;
@@ -192,7 +192,7 @@ public class MapsActivity extends FragmentActivity implements
                 break;
 
             case R.id.park_nearby: //for park
-                mMap.clear();
+                //mMap.clear();
                 url             = getUrl(latitude, longitude, park);
                 transferData[0] = mMap;
                 transferData[1] = url;
