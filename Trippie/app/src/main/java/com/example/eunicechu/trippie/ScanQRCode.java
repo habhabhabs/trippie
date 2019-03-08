@@ -35,7 +35,7 @@ public class ScanQRCode extends AppCompatActivity {
         surfaceView = (SurfaceView) findViewById(R.id.camerapreview);
         textView = (TextView) findViewById(R.id.textView);
         barcodeDetector = new BarcodeDetector.Builder(this).setBarcodeFormats(Barcode.QR_CODE).build();
-        cameraSource = new CameraSource.Builder(this, barcodeDetector).setRequestedPreviewSize(640, 480).build();
+        cameraSource = new CameraSource.Builder(this, barcodeDetector).setRequestedPreviewSize(740, 580).build();
 
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -80,7 +80,7 @@ public class ScanQRCode extends AppCompatActivity {
                     Bundle bundle = new Bundle();
                     bundle.putString("value", "Trip Ended");
                     Vibrator vibrator = (Vibrator)getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                    vibrator.vibrate(1);
+                    vibrator.vibrate(50);
                     textView.setText(qrCodes.valueAt(0).displayValue);
                     startActivity(new Intent(ScanQRCode.this, MainActivity.class).putExtras(bundle));
 //                    startActivityForResult(i, 100);
