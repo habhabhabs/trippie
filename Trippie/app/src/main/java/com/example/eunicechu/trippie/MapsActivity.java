@@ -382,6 +382,12 @@ public class MapsActivity extends FragmentActivity implements
         }
     }
 
+    public void qrcode (View v)
+    {
+        Intent i = new Intent(this, ScanQRCode.class);
+        startActivity(i);
+    }
+
     @Override
     public void onConnectionSuspended(int i) {
 
