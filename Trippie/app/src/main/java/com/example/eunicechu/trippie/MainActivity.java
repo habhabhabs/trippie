@@ -26,4 +26,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void voiceActivity (View v)
+    {
+        Intent i = new Intent(this, voiceActivity.class);
+        i.putExtra("buttonID", v.getId());
+        startActivity(i);
+    }
+
 }

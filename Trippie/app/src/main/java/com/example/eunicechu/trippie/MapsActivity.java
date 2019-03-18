@@ -1,6 +1,8 @@
 package com.example.eunicechu.trippie;
 
 import android.Manifest;
+import android.R;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,6 +10,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -15,7 +18,9 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -29,6 +34,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+
+import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback,
@@ -51,6 +58,9 @@ public class MapsActivity extends FragmentActivity implements
     private ImageButton mallBtn;
     private ImageButton parkBtn;
     private ImageButton trainBtn;
+    private final int REQ_CODE_SPEECH_OUTPUT = 143;
+    private Button openMic;
+    private TextView showVoiceText;
 
 
 ////    private static final int REQUEST_LOCATION_PERMISSION = 1;
@@ -61,66 +71,17 @@ public class MapsActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-//        Intent mI = getIntent();
-//        int intValue = mI.getIntExtra("buttonID", 0);
-//        if(intValue == 0){
-//            // error handling
-//        } else{
-//            if(intValue == R.id.button){
-////                mMap.clear();
-//                String url = getUrl(latitude, longitude, attraction);
-//                transferData[0] = mMap;
-//                transferData[1] = url;
-//
-//                getNearbyPlaces.execute(transferData);
-//                Toast.makeText(this, "Searching for nearby attraction...", Toast.LENGTH_SHORT).show();
-//                Toast.makeText(this, "Showing nearby attraction...", Toast.LENGTH_SHORT).show();
-//            }
-//            if(intValue == R.id.button2){
-////                mMap.clear();
-//                String url = getUrl(latitude, longitude, food);
-//                transferData[0] = mMap;
-//                transferData[1] = url;
-//
-//                getNearbyPlaces.execute(transferData);
-//                Toast.makeText(this, "Searching for nearby food...", Toast.LENGTH_SHORT).show();
-//                Toast.makeText(this, "Showing nearby food...", Toast.LENGTH_SHORT).show();
-//
-//            }
-//            if(intValue == R.id.button3){
-////                mMap.clear();
-//                String url = getUrl(latitude, longitude, mall);
-//                transferData[0] = mMap;
-//                transferData[1] = url;
-//
-//                getNearbyPlaces.execute(transferData);
-//                Toast.makeText(this, "Searching for nearby mall...", Toast.LENGTH_SHORT).show();
-//                Toast.makeText(this, "Showing nearby mall...", Toast.LENGTH_SHORT).show();
-//
-//            }
-//            if(intValue == R.id.button4){
-////                mMap.clear();
-//                String url = getUrl(latitude, longitude, park);
-//                transferData[0] = mMap;
-//                transferData[1] = url;
-//
-//                getNearbyPlaces.execute(transferData);
-//                Toast.makeText(this, "Searching for nearby park...", Toast.LENGTH_SHORT).show();
-//                Toast.makeText(this, "Showing nearby park...", Toast.LENGTH_SHORT).show();
-//
-//            }
-//            if(intValue == R.id.button5){
-////                mMap.clear();
-//                String url = getUrl(latitude, longitude, train);
-//                transferData[0] = mMap;
-//                transferData[1] = url;
-//
-//                getNearbyPlaces.execute(transferData);
-//                Toast.makeText(this, "Searching for nearby train...", Toast.LENGTH_SHORT).show();
-//                Toast.makeText(this, "Showing nearby train...", Toast.LENGTH_SHORT).show();
-//
-//            }
-//        }
+
+        openMic = (Button) findViewById(R.id.button);
+        showVoiceText = (TextView) findViewById(R.id.textvoice);
+
+        openMic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnToOpenMic();
+            }
+        });
+
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             checkUserLocationPermission();
         }
@@ -206,6 +167,26 @@ public class MapsActivity extends FragmentActivity implements
                 trainBtn.setImageResource(R.drawable.trainmap);
 
                 break;
+
+//            case R.id.mic:
+//                btnToOpenMic();
+
+        }
+    }
+
+    private void btnToOpenMic(){
+        Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+
+        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        i.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now");
+
+        try{
+            startActivityForResult(i, REQ_CODE_SPEECH_OUTPUT);
+        }
+        catch
+        (ActivityNotFoundException tim){
+
         }
     }
 
