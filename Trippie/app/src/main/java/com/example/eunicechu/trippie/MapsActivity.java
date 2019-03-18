@@ -28,8 +28,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.InputStream;
@@ -210,6 +214,115 @@ public class MapsActivity extends FragmentActivity implements
                 trainBtn.setImageResource(R.drawable.trainmap);
 
                 break;
+
+            case R.id.qrbutton: //for park
+                //mMap.clear();
+                //url             = getUrl(latitude, longitude, park);
+                //transferData[0] = mMap;
+                //transferData[1] = url;
+                //getNearbyPlaces.setId("park");
+                //getNearbyPlaces.execute(transferData);
+                Toast.makeText(this, "Showing bicycle parking near you.", Toast.LENGTH_SHORT).show();
+
+                JSONArray parkingPlaces = null;
+                try {
+                    // can use the datamall api in place of this parkingPlaces JSONArray variable (via URL connection and BufferedReader)
+                    parkingPlaces = new JSONArray("[\n" +
+                            "    {\n" +
+                            "        \"Description\": \"RP North Canteen\",\n" +
+                            "        \"Latitude\": 1.446865,\n" +
+                            "        \"Longitude\": 103.784696,\n" +
+                            "        \"RackType\": \"Racks\",\n" +
+                            "        \"RackCount\": 65,\n" +
+                            "        \"ShelterIndicator\": \"N\"\n" +
+                            "    },\n" +
+                            "    {\n" +
+                            "        \"Description\": \"Admiralty Park\",\n" +
+                            "        \"Latitude\": 1.448700,\n" +
+                            "        \"Longitude\": 103.778879,\n" +
+                            "        \"RackType\": \"Yellow Box\",\n" +
+                            "        \"RackCount\": 30,\n" +
+                            "        \"ShelterIndicator\": \"N\"\n" +
+                            "    },\n" +
+                            "    {\n" +
+                            "        \"Description\": \"RP Industry Centre\",\n" +
+                            "        \"Latitude\": 1.445015,\n" +
+                            "        \"Longitude\": 103.783594,\n" +
+                            "        \"RackType\": \"Racks\",\n" +
+                            "        \"RackCount\": 10,\n" +
+                            "        \"ShelterIndicator\": \"Y\"\n" +
+                            "    },\n" +
+                            "    {\n" +
+                            "        \"Description\": \"RP E1 Building\",\n" +
+                            "        \"Latitude\": 1.444404,\n" +
+                            "        \"Longitude\": 103.785150,\n" +
+                            "        \"RackType\": \"Yellow Box\",\n" +
+                            "        \"RackCount\": 40,\n" +
+                            "        \"ShelterIndicator\": \"N\"\n" +
+                            "    },\n" +
+                            "    {\n" +
+                            "        \"Description\": \"Block 807 HDB Woodlands\",\n" +
+                            "        \"Latitude\": 1.442301,\n" +
+                            "        \"Longitude\": 103.787290,\n" +
+                            "        \"RackType\": \"Racks\",\n" +
+                            "        \"RackCount\": 5,\n" +
+                            "        \"ShelterIndicator\": \"Y\"\n" +
+                            "    },\n" +
+                            "    {\n" +
+                            "        \"Description\": \"Marsiling Industrial Estate\",\n" +
+                            "        \"Latitude\": 1.441454, \n" +
+                            "        \"Longitude\": 103.782897,\n" +
+                            "        \"RackType\": \"Yellow Box\",\n" +
+                            "        \"RackCount\": 40,\n" +
+                            "        \"ShelterIndicator\": \"N\"\n" +
+                            "    },\n" +
+                            "    {\n" +
+                            "        \"Description\": \"Al-Ameen Eating Corner\",\n" +
+                            "        \"Latitude\": 1.439620,\n" +
+                            "        \"Longitude\": 103.783261,\n" +
+                            "        \"RackType\": \"Racks\",\n" +
+                            "        \"RackCount\": 15,\n" +
+                            "        \"ShelterIndicator\": \"Y\"\n" +
+                            "    },\n" +
+                            "    {\n" +
+                            "        \"Description\": \"Riverside Secondary School\",\n" +
+                            "        \"Latitude\": 1.440789,\n" +
+                            "        \"Longitude\": 103.788637,\n" +
+                            "        \"RackType\": \"Racks\",\n" +
+                            "        \"RackCount\": 5,\n" +
+                            "        \"ShelterIndicator\": \"N\"\n" +
+                            "    },\n" +
+                            "    {\n" +
+                            "        \"Description\": \"Woodlands Community Club\",\n" +
+                            "        \"Latitude\": 1.439910,\n" +
+                            "        \"Longitude\": 103.788325,\n" +
+                            "        \"RackType\": \"Racks\",\n" +
+                            "        \"RackCount\": 27,\n" +
+                            "        \"ShelterIndicator\": \"Y\"\n" +
+                            "    }\n" +
+                            "]");
+
+
+
+                    for (int i = 0; i < parkingPlaces.length(); i++) {
+                        JSONObject parkingPlace = (JSONObject) parkingPlaces.get(i);
+                        LatLng parkingPlaceCoords = new LatLng(parkingPlace.getDouble("Latitude"), parkingPlace.getDouble("Longitude"));
+
+                        Toast.makeText(this, parkingPlaceCoords.toString(), Toast.LENGTH_SHORT).show();
+
+                        mMap.addMarker(new MarkerOptions().position(parkingPlaceCoords).title(parkingPlace.getString("Description")).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
+
+                    }
+
+                } catch (Exception ex) { ex.printStackTrace(); }
+
+
+                //foodBtn.setImageResource(R.drawable.foodmap);
+                //mallBtn.setImageResource(R.drawable.mallsmap);
+                //parkBtn.setImageResource(R.drawable.parksmap_s);
+                //trainBtn.setImageResource(R.drawable.trainmap);
+
+                break;
         }
     }
 
@@ -351,7 +464,7 @@ public class MapsActivity extends FragmentActivity implements
         }
     }
 
-    protected synchronized  void buildGoogleApiClient(){
+    protected synchronized void buildGoogleApiClient(){
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -359,6 +472,7 @@ public class MapsActivity extends FragmentActivity implements
                 .build();
         googleApiClient.connect();
     }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -386,90 +500,93 @@ public class MapsActivity extends FragmentActivity implements
         }
     }
 
-    public JSONObject getParkingJsonData() {
-        JSONObject parkingPlaces = null;
-        try {
-            parkingPlaces = new JSONObject("{ \n" +
-                    "    \"value\": [\n" +
-                    "        {\n" +
-                    "            \"Description\": \"RP North Canteen\",\n" +
-                    "            \"Latitude\": 1.446865,\n" +
-                    "            \"Longitude\": 103.784696,\n" +
-                    "            \"RackType\": \"Racks\",\n" +
-                    "            \"RackCount\": 65,\n" +
-                    "            \"ShelterIndicator\": \"N\"\n" +
-                    "        },\n" +
-                    "        {\n" +
-                    "            \"Description\": \"Admiralty Park\",\n" +
-                    "            \"Latitude\": 1.448700,\n" +
-                    "            \"Longitude\": 103.778879,\n" +
-                    "            \"RackType\": \"Yellow Box\",\n" +
-                    "            \"RackCount\": 30,\n" +
-                    "            \"ShelterIndicator\": \"N\"\n" +
-                    "        },\n" +
-                    "        {\n" +
-                    "            \"Description\": \"RP Industry Centre\",\n" +
-                    "            \"Latitude\": 1.445015,\n" +
-                    "            \"Longitude\": 103.783594,\n" +
-                    "            \"RackType\": \"Racks\",\n" +
-                    "            \"RackCount\": 10,\n" +
-                    "            \"ShelterIndicator\": \"Y\"\n" +
-                    "        },\n" +
-                    "        {\n" +
-                    "            \"Description\": \"RP E1 Building\",\n" +
-                    "            \"Latitude\": 1.444404,\n" +
-                    "            \"Longitude\": 103.785150,\n" +
-                    "            \"RackType\": \"Yellow Box\",\n" +
-                    "            \"RackCount\": 40,\n" +
-                    "            \"ShelterIndicator\": \"N\"\n" +
-                    "        },\n" +
-                    "        {\n" +
-                    "            \"Description\": \"Block 807 HDB Woodlands\",\n" +
-                    "            \"Latitude\": 1.442301,\n" +
-                    "            \"Longitude\": 103.787290,\n" +
-                    "            \"RackType\": \"Racks\",\n" +
-                    "            \"RackCount\": 5,\n" +
-                    "            \"ShelterIndicator\": \"Y\"\n" +
-                    "        },\n" +
-                    "        {\n" +
-                    "            \"Description\": \"Marsiling Industrial Estate\",\n" +
-                    "            \"Latitude\": 1.441454, \n" +
-                    "            \"Longitude\": 103.782897,\n" +
-                    "            \"RackType\": \"Yellow Box\",\n" +
-                    "            \"RackCount\": 40,\n" +
-                    "            \"ShelterIndicator\": \"N\"\n" +
-                    "        },\n" +
-                    "        {\n" +
-                    "            \"Description\": \"Al-Ameen Eating Corner\",\n" +
-                    "            \"Latitude\": 1.439620,\n" +
-                    "            \"Longitude\": 103.783261,\n" +
-                    "            \"RackType\": \"Racks\",\n" +
-                    "            \"RackCount\": 15,\n" +
-                    "            \"ShelterIndicator\": \"Y\"\n" +
-                    "        },\n" +
-                    "        {\n" +
-                    "            \"Description\": \"Riverside Secondary School\",\n" +
-                    "            \"Latitude\": 1.440789,\n" +
-                    "            \"Longitude\": 103.788637,\n" +
-                    "            \"RackType\": \"Racks\",\n" +
-                    "            \"RackCount\": 5,\n" +
-                    "            \"ShelterIndicator\": \"N\"\n" +
-                    "        },\n" +
-                    "        {\n" +
-                    "            \"Description\": \"Woodlands Community Club\",\n" +
-                    "            \"Latitude\": 1.439910,\n" +
-                    "            \"Longitude\": 103.788325,\n" +
-                    "            \"RackType\": \"Racks\",\n" +
-                    "            \"RackCount\": 27,\n" +
-                    "            \"ShelterIndicator\": \"Y\"\n" +
-                    "        }\n" +
-                    "    ]\n" +
-                    "}");
-        } catch (Exception ex) {
-            return null;
-        }
-        return parkingPlaces;
-    }
+//    public void showParkingMarkers() {
+//        JSONArray parkingPlaces = null;
+//        try {
+//            // can use the datamall api in place of this parkingPlaces JSONArray variable (via URL connection and BufferedReader)
+//            parkingPlaces = new JSONArray("[\n" +
+//                    "    {\n" +
+//                    "        \"Description\": \"RP North Canteen\",\n" +
+//                    "        \"Latitude\": 1.446865,\n" +
+//                    "        \"Longitude\": 103.784696,\n" +
+//                    "        \"RackType\": \"Racks\",\n" +
+//                    "        \"RackCount\": 65,\n" +
+//                    "        \"ShelterIndicator\": \"N\"\n" +
+//                    "    },\n" +
+//                    "    {\n" +
+//                    "        \"Description\": \"Admiralty Park\",\n" +
+//                    "        \"Latitude\": 1.448700,\n" +
+//                    "        \"Longitude\": 103.778879,\n" +
+//                    "        \"RackType\": \"Yellow Box\",\n" +
+//                    "        \"RackCount\": 30,\n" +
+//                    "        \"ShelterIndicator\": \"N\"\n" +
+//                    "    },\n" +
+//                    "    {\n" +
+//                    "        \"Description\": \"RP Industry Centre\",\n" +
+//                    "        \"Latitude\": 1.445015,\n" +
+//                    "        \"Longitude\": 103.783594,\n" +
+//                    "        \"RackType\": \"Racks\",\n" +
+//                    "        \"RackCount\": 10,\n" +
+//                    "        \"ShelterIndicator\": \"Y\"\n" +
+//                    "    },\n" +
+//                    "    {\n" +
+//                    "        \"Description\": \"RP E1 Building\",\n" +
+//                    "        \"Latitude\": 1.444404,\n" +
+//                    "        \"Longitude\": 103.785150,\n" +
+//                    "        \"RackType\": \"Yellow Box\",\n" +
+//                    "        \"RackCount\": 40,\n" +
+//                    "        \"ShelterIndicator\": \"N\"\n" +
+//                    "    },\n" +
+//                    "    {\n" +
+//                    "        \"Description\": \"Block 807 HDB Woodlands\",\n" +
+//                    "        \"Latitude\": 1.442301,\n" +
+//                    "        \"Longitude\": 103.787290,\n" +
+//                    "        \"RackType\": \"Racks\",\n" +
+//                    "        \"RackCount\": 5,\n" +
+//                    "        \"ShelterIndicator\": \"Y\"\n" +
+//                    "    },\n" +
+//                    "    {\n" +
+//                    "        \"Description\": \"Marsiling Industrial Estate\",\n" +
+//                    "        \"Latitude\": 1.441454, \n" +
+//                    "        \"Longitude\": 103.782897,\n" +
+//                    "        \"RackType\": \"Yellow Box\",\n" +
+//                    "        \"RackCount\": 40,\n" +
+//                    "        \"ShelterIndicator\": \"N\"\n" +
+//                    "    },\n" +
+//                    "    {\n" +
+//                    "        \"Description\": \"Al-Ameen Eating Corner\",\n" +
+//                    "        \"Latitude\": 1.439620,\n" +
+//                    "        \"Longitude\": 103.783261,\n" +
+//                    "        \"RackType\": \"Racks\",\n" +
+//                    "        \"RackCount\": 15,\n" +
+//                    "        \"ShelterIndicator\": \"Y\"\n" +
+//                    "    },\n" +
+//                    "    {\n" +
+//                    "        \"Description\": \"Riverside Secondary School\",\n" +
+//                    "        \"Latitude\": 1.440789,\n" +
+//                    "        \"Longitude\": 103.788637,\n" +
+//                    "        \"RackType\": \"Racks\",\n" +
+//                    "        \"RackCount\": 5,\n" +
+//                    "        \"ShelterIndicator\": \"N\"\n" +
+//                    "    },\n" +
+//                    "    {\n" +
+//                    "        \"Description\": \"Woodlands Community Club\",\n" +
+//                    "        \"Latitude\": 1.439910,\n" +
+//                    "        \"Longitude\": 103.788325,\n" +
+//                    "        \"RackType\": \"Racks\",\n" +
+//                    "        \"RackCount\": 27,\n" +
+//                    "        \"ShelterIndicator\": \"Y\"\n" +
+//                    "    }\n" +
+//                    "]");
+//
+//            for (int i = 0; i < parkingPlaces.length(); i++) {
+//                JSONObject parkingPlace = (JSONObject) parkingPlaces.get(i);
+//                LatLng parkingPlaceCoords = new LatLng(parkingPlace.getDouble("Latitude"), parkingPlace.getDouble("Longitude"));
+//                mMap.addMarker(new MarkerOptions().position(parkingPlaceCoords).title(parkingPlace.getString("Description")).snippet("Rack Type: " + parkingPlace.getString("Racks") + "\nRack Count: " + parkingPlace.getInt("RackCount") + "\nShelter Indicator: " + parkingPlace.getString("ShelterIndicator")));
+//            }
+//
+//        } catch (Exception ex) { ex.printStackTrace(); }
+//    }
 
 
 
