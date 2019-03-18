@@ -1,0 +1,77 @@
+// Bicycle Parking Slots around Woodlands - Sample Size
+{ 
+    "value": [
+        {
+            "Description": "RP North Canteen",
+            "Latitude": 1.446865,
+            "Longitude": 103.784696,
+            "RackType": "Racks",
+            "RackCount": 65,
+            "ShelterIndicator": "N"
+        },
+        {
+            "Description": "Admiralty Park",
+            "Latitude": 1.448700,
+            "Longitude": 103.778879,
+            "RackType": "Yellow Box",
+            "RackCount": 30,
+            "ShelterIndicator": "N"
+        },
+        {
+            "Description": "RP Industry Centre",
+            "Latitude": 1.445015,
+            "Longitude": 103.783594,
+            "RackType": "Racks",
+            "RackCount": 10,
+            "ShelterIndicator": "Y"
+        },
+        {
+            "Description": "RP E1 Building",
+            "Latitude": 1.444404,
+            "Longitude": 103.785150,
+            "RackType": "Yellow Box",
+            "RackCount": 40,
+            "ShelterIndicator": "N"
+        },
+        {
+            "Description": "Block 807 HDB Woodlands",
+            "Latitude": 1.442301,
+            "Longitude": 103.787290,
+            "RackType": "Racks",
+            "RackCount": 5,
+            "ShelterIndicator": "Y"
+        },
+        {
+            "Description": "Marsiling Industrial Estate",
+            "Latitude": 1.441454, 
+            "Longitude": 103.782897,
+            "RackType": "Yellow Box",
+            "RackCount": 40,
+            "ShelterIndicator": "N"
+        },
+        {
+            "Description": "Al-Ameen Eating Corner",
+            "Latitude": 1.439620,
+            "Longitude": 103.783261,
+            "RackType": "Racks",
+            "RackCount": 15,
+            "ShelterIndicator": "Y"
+        },
+        {
+            "Description": "Riverside Secondary School",
+            "Latitude": 1.440789,
+            "Longitude": 103.788637,
+            "RackType": "Racks",
+            "RackCount": 5,
+            "ShelterIndicator": "N"
+        },
+        {
+            "Description": "Woodlands Community Club",
+            "Latitude": 1.439910,
+            "Longitude": 103.788325,
+            "RackType": "Racks",
+            "RackCount": 27,
+            "ShelterIndicator": "Y"
+        }
+    ]
+}
