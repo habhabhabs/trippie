@@ -28,7 +28,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -36,7 +35,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.InputStream;
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback,
@@ -60,75 +58,12 @@ public class MapsActivity extends FragmentActivity implements
     private ImageButton parkBtn;
     private ImageButton trainBtn;
 
-
-////    private static final int REQUEST_LOCATION_PERMISSION = 1;
-//    Marker marker;
-//    LocationListener locationListener;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-//        Intent mI = getIntent();
-//        int intValue = mI.getIntExtra("buttonID", 0);
-//        if(intValue == 0){
-//            // error handling
-//        } else{
-//            if(intValue == R.id.button){
-////                mMap.clear();
-//                String url = getUrl(latitude, longitude, attraction);
-//                transferData[0] = mMap;
-//                transferData[1] = url;
-//
-//                getNearbyPlaces.execute(transferData);
-//                Toast.makeText(this, "Searching for nearby attraction...", Toast.LENGTH_SHORT).show();
-//                Toast.makeText(this, "Showing nearby attraction...", Toast.LENGTH_SHORT).show();
-//            }
-//            if(intValue == R.id.button2){
-////                mMap.clear();
-//                String url = getUrl(latitude, longitude, food);
-//                transferData[0] = mMap;
-//                transferData[1] = url;
-//
-//                getNearbyPlaces.execute(transferData);
-//                Toast.makeText(this, "Searching for nearby food...", Toast.LENGTH_SHORT).show();
-//                Toast.makeText(this, "Showing nearby food...", Toast.LENGTH_SHORT).show();
-//
-//            }
-//            if(intValue == R.id.button3){
-////                mMap.clear();
-//                String url = getUrl(latitude, longitude, mall);
-//                transferData[0] = mMap;
-//                transferData[1] = url;
-//
-//                getNearbyPlaces.execute(transferData);
-//                Toast.makeText(this, "Searching for nearby mall...", Toast.LENGTH_SHORT).show();
-//                Toast.makeText(this, "Showing nearby mall...", Toast.LENGTH_SHORT).show();
-//
-//            }
-//            if(intValue == R.id.button4){
-////                mMap.clear();
-//                String url = getUrl(latitude, longitude, park);
-//                transferData[0] = mMap;
-//                transferData[1] = url;
-//
-//                getNearbyPlaces.execute(transferData);
-//                Toast.makeText(this, "Searching for nearby park...", Toast.LENGTH_SHORT).show();
-//                Toast.makeText(this, "Showing nearby park...", Toast.LENGTH_SHORT).show();
-//
-//            }
-//            if(intValue == R.id.button5){
-////                mMap.clear();
-//                String url = getUrl(latitude, longitude, train);
-//                transferData[0] = mMap;
-//                transferData[1] = url;
-//
-//                getNearbyPlaces.execute(transferData);
-//                Toast.makeText(this, "Searching for nearby train...", Toast.LENGTH_SHORT).show();
-//                Toast.makeText(this, "Showing nearby train...", Toast.LENGTH_SHORT).show();
-//
-//            }
-//        }
+        findViewById(R.id.qrbutton).setVisibility(View.INVISIBLE);
+
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             checkUserLocationPermission();
         }
@@ -215,15 +150,10 @@ public class MapsActivity extends FragmentActivity implements
 
                 break;
 
-            case R.id.qrbutton: //for park
-                //mMap.clear();
-                //url             = getUrl(latitude, longitude, park);
-                //transferData[0] = mMap;
-                //transferData[1] = url;
-                //getNearbyPlaces.setId("park");
-                //getNearbyPlaces.execute(transferData);
+            case R.id.parkingButton: //for bicycle parking
                 Toast.makeText(this, "Showing bicycle parking near you.", Toast.LENGTH_SHORT).show();
-
+                findViewById(R.id.parkingButton).setVisibility(View.GONE);
+                findViewById(R.id.qrbutton).setVisibility(View.VISIBLE);
                 JSONArray parkingPlaces = null;
                 try {
                     // can use the datamall api in place of this parkingPlaces JSONArray variable (via URL connection and BufferedReader)
@@ -308,19 +238,11 @@ public class MapsActivity extends FragmentActivity implements
                         JSONObject parkingPlace = (JSONObject) parkingPlaces.get(i);
                         LatLng parkingPlaceCoords = new LatLng(parkingPlace.getDouble("Latitude"), parkingPlace.getDouble("Longitude"));
 
-                        Toast.makeText(this, parkingPlaceCoords.toString(), Toast.LENGTH_SHORT).show();
-
                         mMap.addMarker(new MarkerOptions().position(parkingPlaceCoords).title(parkingPlace.getString("Description")).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
 
                     }
 
                 } catch (Exception ex) { ex.printStackTrace(); }
-
-
-                //foodBtn.setImageResource(R.drawable.foodmap);
-                //mallBtn.setImageResource(R.drawable.mallsmap);
-                //parkBtn.setImageResource(R.drawable.parksmap_s);
-                //trainBtn.setImageResource(R.drawable.trainmap);
 
                 break;
         }
@@ -418,10 +340,6 @@ public class MapsActivity extends FragmentActivity implements
             }
         }
 
-        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
 
@@ -499,97 +417,6 @@ public class MapsActivity extends FragmentActivity implements
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
         }
     }
-
-//    public void showParkingMarkers() {
-//        JSONArray parkingPlaces = null;
-//        try {
-//            // can use the datamall api in place of this parkingPlaces JSONArray variable (via URL connection and BufferedReader)
-//            parkingPlaces = new JSONArray("[\n" +
-//                    "    {\n" +
-//                    "        \"Description\": \"RP North Canteen\",\n" +
-//                    "        \"Latitude\": 1.446865,\n" +
-//                    "        \"Longitude\": 103.784696,\n" +
-//                    "        \"RackType\": \"Racks\",\n" +
-//                    "        \"RackCount\": 65,\n" +
-//                    "        \"ShelterIndicator\": \"N\"\n" +
-//                    "    },\n" +
-//                    "    {\n" +
-//                    "        \"Description\": \"Admiralty Park\",\n" +
-//                    "        \"Latitude\": 1.448700,\n" +
-//                    "        \"Longitude\": 103.778879,\n" +
-//                    "        \"RackType\": \"Yellow Box\",\n" +
-//                    "        \"RackCount\": 30,\n" +
-//                    "        \"ShelterIndicator\": \"N\"\n" +
-//                    "    },\n" +
-//                    "    {\n" +
-//                    "        \"Description\": \"RP Industry Centre\",\n" +
-//                    "        \"Latitude\": 1.445015,\n" +
-//                    "        \"Longitude\": 103.783594,\n" +
-//                    "        \"RackType\": \"Racks\",\n" +
-//                    "        \"RackCount\": 10,\n" +
-//                    "        \"ShelterIndicator\": \"Y\"\n" +
-//                    "    },\n" +
-//                    "    {\n" +
-//                    "        \"Description\": \"RP E1 Building\",\n" +
-//                    "        \"Latitude\": 1.444404,\n" +
-//                    "        \"Longitude\": 103.785150,\n" +
-//                    "        \"RackType\": \"Yellow Box\",\n" +
-//                    "        \"RackCount\": 40,\n" +
-//                    "        \"ShelterIndicator\": \"N\"\n" +
-//                    "    },\n" +
-//                    "    {\n" +
-//                    "        \"Description\": \"Block 807 HDB Woodlands\",\n" +
-//                    "        \"Latitude\": 1.442301,\n" +
-//                    "        \"Longitude\": 103.787290,\n" +
-//                    "        \"RackType\": \"Racks\",\n" +
-//                    "        \"RackCount\": 5,\n" +
-//                    "        \"ShelterIndicator\": \"Y\"\n" +
-//                    "    },\n" +
-//                    "    {\n" +
-//                    "        \"Description\": \"Marsiling Industrial Estate\",\n" +
-//                    "        \"Latitude\": 1.441454, \n" +
-//                    "        \"Longitude\": 103.782897,\n" +
-//                    "        \"RackType\": \"Yellow Box\",\n" +
-//                    "        \"RackCount\": 40,\n" +
-//                    "        \"ShelterIndicator\": \"N\"\n" +
-//                    "    },\n" +
-//                    "    {\n" +
-//                    "        \"Description\": \"Al-Ameen Eating Corner\",\n" +
-//                    "        \"Latitude\": 1.439620,\n" +
-//                    "        \"Longitude\": 103.783261,\n" +
-//                    "        \"RackType\": \"Racks\",\n" +
-//                    "        \"RackCount\": 15,\n" +
-//                    "        \"ShelterIndicator\": \"Y\"\n" +
-//                    "    },\n" +
-//                    "    {\n" +
-//                    "        \"Description\": \"Riverside Secondary School\",\n" +
-//                    "        \"Latitude\": 1.440789,\n" +
-//                    "        \"Longitude\": 103.788637,\n" +
-//                    "        \"RackType\": \"Racks\",\n" +
-//                    "        \"RackCount\": 5,\n" +
-//                    "        \"ShelterIndicator\": \"N\"\n" +
-//                    "    },\n" +
-//                    "    {\n" +
-//                    "        \"Description\": \"Woodlands Community Club\",\n" +
-//                    "        \"Latitude\": 1.439910,\n" +
-//                    "        \"Longitude\": 103.788325,\n" +
-//                    "        \"RackType\": \"Racks\",\n" +
-//                    "        \"RackCount\": 27,\n" +
-//                    "        \"ShelterIndicator\": \"Y\"\n" +
-//                    "    }\n" +
-//                    "]");
-//
-//            for (int i = 0; i < parkingPlaces.length(); i++) {
-//                JSONObject parkingPlace = (JSONObject) parkingPlaces.get(i);
-//                LatLng parkingPlaceCoords = new LatLng(parkingPlace.getDouble("Latitude"), parkingPlace.getDouble("Longitude"));
-//                mMap.addMarker(new MarkerOptions().position(parkingPlaceCoords).title(parkingPlace.getString("Description")).snippet("Rack Type: " + parkingPlace.getString("Racks") + "\nRack Count: " + parkingPlace.getInt("RackCount") + "\nShelter Indicator: " + parkingPlace.getString("ShelterIndicator")));
-//            }
-//
-//        } catch (Exception ex) { ex.printStackTrace(); }
-//    }
-
-
-
 
     // activate the qrcode reader after clicking on parking marker
     public void qrcode (View v)
