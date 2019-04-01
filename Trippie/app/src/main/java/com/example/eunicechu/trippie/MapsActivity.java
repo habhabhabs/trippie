@@ -2,6 +2,7 @@ package com.example.eunicechu.trippie;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -14,6 +15,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -26,7 +28,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback,
@@ -45,76 +53,17 @@ public class MapsActivity extends FragmentActivity implements
     private static final float MIN_DISTANCE = 1000;
     private double latitude, longitude;
     private int proximityRadius = 10000;
-
-
-////    private static final int REQUEST_LOCATION_PERMISSION = 1;
-//    Marker marker;
-//    LocationListener locationListener;
+    private ImageButton foodBtn;
+    private ImageButton mallBtn;
+    private ImageButton parkBtn;
+    private ImageButton trainBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-//        Intent mI = getIntent();
-//        int intValue = mI.getIntExtra("buttonID", 0);
-//        if(intValue == 0){
-//            // error handling
-//        } else{
-//            if(intValue == R.id.button){
-////                mMap.clear();
-//                String url = getUrl(latitude, longitude, attraction);
-//                transferData[0] = mMap;
-//                transferData[1] = url;
-//
-//                getNearbyPlaces.execute(transferData);
-//                Toast.makeText(this, "Searching for nearby attraction...", Toast.LENGTH_SHORT).show();
-//                Toast.makeText(this, "Showing nearby attraction...", Toast.LENGTH_SHORT).show();
-//            }
-//            if(intValue == R.id.button2){
-////                mMap.clear();
-//                String url = getUrl(latitude, longitude, food);
-//                transferData[0] = mMap;
-//                transferData[1] = url;
-//
-//                getNearbyPlaces.execute(transferData);
-//                Toast.makeText(this, "Searching for nearby food...", Toast.LENGTH_SHORT).show();
-//                Toast.makeText(this, "Showing nearby food...", Toast.LENGTH_SHORT).show();
-//
-//            }
-//            if(intValue == R.id.button3){
-////                mMap.clear();
-//                String url = getUrl(latitude, longitude, mall);
-//                transferData[0] = mMap;
-//                transferData[1] = url;
-//
-//                getNearbyPlaces.execute(transferData);
-//                Toast.makeText(this, "Searching for nearby mall...", Toast.LENGTH_SHORT).show();
-//                Toast.makeText(this, "Showing nearby mall...", Toast.LENGTH_SHORT).show();
-//
-//            }
-//            if(intValue == R.id.button4){
-////                mMap.clear();
-//                String url = getUrl(latitude, longitude, park);
-//                transferData[0] = mMap;
-//                transferData[1] = url;
-//
-//                getNearbyPlaces.execute(transferData);
-//                Toast.makeText(this, "Searching for nearby park...", Toast.LENGTH_SHORT).show();
-//                Toast.makeText(this, "Showing nearby park...", Toast.LENGTH_SHORT).show();
-//
-//            }
-//            if(intValue == R.id.button5){
-////                mMap.clear();
-//                String url = getUrl(latitude, longitude, train);
-//                transferData[0] = mMap;
-//                transferData[1] = url;
-//
-//                getNearbyPlaces.execute(transferData);
-//                Toast.makeText(this, "Searching for nearby train...", Toast.LENGTH_SHORT).show();
-//                Toast.makeText(this, "Showing nearby train...", Toast.LENGTH_SHORT).show();
-//
-//            }
-//        }
+        findViewById(R.id.qrbutton).setVisibility(View.INVISIBLE);
+
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             checkUserLocationPermission();
         }
@@ -124,56 +73,177 @@ public class MapsActivity extends FragmentActivity implements
         mapFragment.getMapAsync(this);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        foodBtn = findViewById(R.id.food_nearby);
+        mallBtn = findViewById(R.id.mall_nearby);
+        parkBtn = findViewById(R.id.park_nearby);
+        trainBtn = findViewById(R.id.train_nearby);
     }
 
     public void onClick(View v){
         String attraction = "attraction", restaurant = "restaurant", mall = "shopping_mall", park = "park", train = "train_station";
         Object transferData[]           = new Object[2];
         GetNearbyPlaces getNearbyPlaces = new GetNearbyPlaces();
-
+        //mMap.clear();
         switch(v.getId()){
             case R.id.food_nearby: //for food
-                mMap.clear();
+                //mMap.clear();
                 String url      = getUrl(latitude, longitude, restaurant);
                 transferData[0] = mMap;
                 transferData[1] = url;
-
+                getNearbyPlaces.setId("food");
                 getNearbyPlaces.execute(transferData);
-                Toast.makeText(this, "Searching for nearby food...", Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, "Showing nearby food...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Showing nearby food.", Toast.LENGTH_SHORT).show();
+
+                foodBtn.setImageResource(R.drawable.foodmap_s);
+                mallBtn.setImageResource(R.drawable.mallsmap);
+                parkBtn.setImageResource(R.drawable.parksmap);
+                trainBtn.setImageResource(R.drawable.trainmap);
+
                 break;
 
             case R.id.train_nearby: //for train
-                mMap.clear();
+                //mMap.clear();
                 url             = getUrl(latitude, longitude, train);
                 transferData[0] = mMap;
                 transferData[1] = url;
-
+                getNearbyPlaces.setId("train");
                 getNearbyPlaces.execute(transferData);
-                Toast.makeText(this, "Searching for nearby train...", Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, "Showing nearby train...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Showing nearby train stations.", Toast.LENGTH_SHORT).show();
+
+                foodBtn.setImageResource(R.drawable.foodmap);
+                mallBtn.setImageResource(R.drawable.mallsmap);
+                parkBtn.setImageResource(R.drawable.parksmap);
+                trainBtn.setImageResource(R.drawable.trainmap_s);
+
                 break;
 
             case R.id.mall_nearby: //for mall
-                mMap.clear();
+                //mMap.clear();
                 url             = getUrl(latitude, longitude, mall);
                 transferData[0] = mMap;
                 transferData[1] = url;
-
+                getNearbyPlaces.setId("mall");
                 getNearbyPlaces.execute(transferData);
-                Toast.makeText(this, "Searching for nearby mall...", Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, "Showing nearby mall...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Showing nearby malls.", Toast.LENGTH_SHORT).show();
+
+                foodBtn.setImageResource(R.drawable.foodmap);
+                mallBtn.setImageResource(R.drawable.mallsmap_s);
+                parkBtn.setImageResource(R.drawable.parksmap);
+                trainBtn.setImageResource(R.drawable.trainmap);
+
                 break;
 
-            case R.id.park_nearby: //for mall
-                mMap.clear();
+            case R.id.park_nearby: //for park
+                //mMap.clear();
                 url             = getUrl(latitude, longitude, park);
                 transferData[0] = mMap;
                 transferData[1] = url;
-
+                getNearbyPlaces.setId("park");
                 getNearbyPlaces.execute(transferData);
-                Toast.makeText(this, "Searching for nearby park...", Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, "Showing nearby park...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Showing nearby parks.", Toast.LENGTH_SHORT).show();
+
+                foodBtn.setImageResource(R.drawable.foodmap);
+                mallBtn.setImageResource(R.drawable.mallsmap);
+                parkBtn.setImageResource(R.drawable.parksmap_s);
+                trainBtn.setImageResource(R.drawable.trainmap);
+
+                break;
+
+            case R.id.parkingButton: //for bicycle parking
+                Toast.makeText(this, "Showing bicycle parking near you.", Toast.LENGTH_SHORT).show();
+                findViewById(R.id.parkingButton).setVisibility(View.GONE);
+                findViewById(R.id.qrbutton).setVisibility(View.VISIBLE);
+                JSONArray parkingPlaces = null;
+                try {
+                    // can use the datamall api in place of this parkingPlaces JSONArray variable (via URL connection and BufferedReader)
+                    parkingPlaces = new JSONArray("[\n" +
+                            "    {\n" +
+                            "        \"Description\": \"RP North Canteen\",\n" +
+                            "        \"Latitude\": 1.446865,\n" +
+                            "        \"Longitude\": 103.784696,\n" +
+                            "        \"RackType\": \"Racks\",\n" +
+                            "        \"RackCount\": 65,\n" +
+                            "        \"ShelterIndicator\": \"N\"\n" +
+                            "    },\n" +
+                            "    {\n" +
+                            "        \"Description\": \"Admiralty Park\",\n" +
+                            "        \"Latitude\": 1.448700,\n" +
+                            "        \"Longitude\": 103.778879,\n" +
+                            "        \"RackType\": \"Yellow Box\",\n" +
+                            "        \"RackCount\": 30,\n" +
+                            "        \"ShelterIndicator\": \"N\"\n" +
+                            "    },\n" +
+                            "    {\n" +
+                            "        \"Description\": \"RP Industry Centre\",\n" +
+                            "        \"Latitude\": 1.445015,\n" +
+                            "        \"Longitude\": 103.783594,\n" +
+                            "        \"RackType\": \"Racks\",\n" +
+                            "        \"RackCount\": 10,\n" +
+                            "        \"ShelterIndicator\": \"Y\"\n" +
+                            "    },\n" +
+                            "    {\n" +
+                            "        \"Description\": \"RP E1 Building\",\n" +
+                            "        \"Latitude\": 1.444404,\n" +
+                            "        \"Longitude\": 103.785150,\n" +
+                            "        \"RackType\": \"Yellow Box\",\n" +
+                            "        \"RackCount\": 40,\n" +
+                            "        \"ShelterIndicator\": \"N\"\n" +
+                            "    },\n" +
+                            "    {\n" +
+                            "        \"Description\": \"Block 807 HDB Woodlands\",\n" +
+                            "        \"Latitude\": 1.442301,\n" +
+                            "        \"Longitude\": 103.787290,\n" +
+                            "        \"RackType\": \"Racks\",\n" +
+                            "        \"RackCount\": 5,\n" +
+                            "        \"ShelterIndicator\": \"Y\"\n" +
+                            "    },\n" +
+                            "    {\n" +
+                            "        \"Description\": \"Marsiling Industrial Estate\",\n" +
+                            "        \"Latitude\": 1.441454, \n" +
+                            "        \"Longitude\": 103.782897,\n" +
+                            "        \"RackType\": \"Yellow Box\",\n" +
+                            "        \"RackCount\": 40,\n" +
+                            "        \"ShelterIndicator\": \"N\"\n" +
+                            "    },\n" +
+                            "    {\n" +
+                            "        \"Description\": \"Al-Ameen Eating Corner\",\n" +
+                            "        \"Latitude\": 1.439620,\n" +
+                            "        \"Longitude\": 103.783261,\n" +
+                            "        \"RackType\": \"Racks\",\n" +
+                            "        \"RackCount\": 15,\n" +
+                            "        \"ShelterIndicator\": \"Y\"\n" +
+                            "    },\n" +
+                            "    {\n" +
+                            "        \"Description\": \"Riverside Secondary School\",\n" +
+                            "        \"Latitude\": 1.440789,\n" +
+                            "        \"Longitude\": 103.788637,\n" +
+                            "        \"RackType\": \"Racks\",\n" +
+                            "        \"RackCount\": 5,\n" +
+                            "        \"ShelterIndicator\": \"N\"\n" +
+                            "    },\n" +
+                            "    {\n" +
+                            "        \"Description\": \"Woodlands Community Club\",\n" +
+                            "        \"Latitude\": 1.439910,\n" +
+                            "        \"Longitude\": 103.788325,\n" +
+                            "        \"RackType\": \"Racks\",\n" +
+                            "        \"RackCount\": 27,\n" +
+                            "        \"ShelterIndicator\": \"Y\"\n" +
+                            "    }\n" +
+                            "]");
+
+
+
+                    for (int i = 0; i < parkingPlaces.length(); i++) {
+                        JSONObject parkingPlace = (JSONObject) parkingPlaces.get(i);
+                        LatLng parkingPlaceCoords = new LatLng(parkingPlace.getDouble("Latitude"), parkingPlace.getDouble("Longitude"));
+
+                        mMap.addMarker(new MarkerOptions().position(parkingPlaceCoords).title(parkingPlace.getString("Description")).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking)));
+
+                    }
+
+                } catch (Exception ex) { ex.printStackTrace(); }
+
                 break;
         }
     }
@@ -193,6 +263,72 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        String attraction = "attraction", restaurant = "restaurant", mall = "shopping_mall", park = "park", train = "train_station";
+        Object transferData[]           = new Object[2];
+        GetNearbyPlaces getNearbyPlaces = new GetNearbyPlaces();
+
+        Intent mI = getIntent();
+        int intValue = mI.getIntExtra("buttonID", 0);
+        if(intValue == 0){
+            // error handling
+        } else{
+            if(intValue == R.id.foodBtn){
+                mMap.clear();
+                String url      = getUrl(1.4360, 103.7860, restaurant);
+                transferData[0] = mMap;
+                transferData[1] = url;
+                getNearbyPlaces.setId("food");
+                getNearbyPlaces.execute(transferData);
+                Toast.makeText(this, "Showing nearby food.", Toast.LENGTH_SHORT).show();
+
+                foodBtn.setImageResource(R.drawable.foodmap_s);
+                mallBtn.setImageResource(R.drawable.mallsmap);
+                parkBtn.setImageResource(R.drawable.parksmap);
+                trainBtn.setImageResource(R.drawable.trainmap);
+            }
+            else if(intValue == R.id.mallBtn){
+                mMap.clear();
+                String url      = getUrl(1.4360, 103.7860, mall);
+                transferData[0] = mMap;
+                transferData[1] = url;
+                getNearbyPlaces.setId("mall");
+                getNearbyPlaces.execute(transferData);
+                Toast.makeText(this, "Showing nearby malls.", Toast.LENGTH_SHORT).show();
+
+                foodBtn.setImageResource(R.drawable.foodmap);
+                mallBtn.setImageResource(R.drawable.mallsmap_s);
+                parkBtn.setImageResource(R.drawable.parksmap);
+                trainBtn.setImageResource(R.drawable.trainmap);
+            }
+            else if(intValue == R.id.parkBtn){
+                mMap.clear();
+                String url      = getUrl(1.4360, 103.7860, park);
+                transferData[0] = mMap;
+                transferData[1] = url;
+                getNearbyPlaces.setId("park");
+                getNearbyPlaces.execute(transferData);
+                Toast.makeText(this, "Showing nearby parks.", Toast.LENGTH_SHORT).show();
+
+                foodBtn.setImageResource(R.drawable.foodmap);
+                mallBtn.setImageResource(R.drawable.mallsmap);
+                parkBtn.setImageResource(R.drawable.parksmap_s);
+                trainBtn.setImageResource(R.drawable.trainmap);
+            }
+            else {
+                mMap.clear();
+                String url      = getUrl(1.4360, 103.7860, train);
+                transferData[0] = mMap;
+                transferData[1] = url;
+                getNearbyPlaces.setId("train");
+                getNearbyPlaces.execute(transferData);
+                Toast.makeText(this, "Showing nearby train stations.", Toast.LENGTH_SHORT).show();
+
+                foodBtn.setImageResource(R.drawable.foodmap);
+                mallBtn.setImageResource(R.drawable.mallsmap);
+                parkBtn.setImageResource(R.drawable.parksmap);
+                trainBtn.setImageResource(R.drawable.trainmap_s);
+            }
+        }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -244,6 +380,7 @@ public class MapsActivity extends FragmentActivity implements
                 .build();
         googleApiClient.connect();
     }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -254,7 +391,7 @@ public class MapsActivity extends FragmentActivity implements
         latitude = location.getLatitude();
         longitude = location.getLongitude();
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 20);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
         mMap.animateCamera(cameraUpdate);
     }
 
@@ -269,6 +406,13 @@ public class MapsActivity extends FragmentActivity implements
         {
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
         }
+    }
+
+    // activate the qrcode reader after clicking on parking marker
+    public void qrcode (View v)
+    {
+        Intent i = new Intent(this, ScanQRCode.class);
+        startActivity(i);
     }
 
     @Override
